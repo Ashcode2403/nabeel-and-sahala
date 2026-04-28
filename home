@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nabeel & Shahalasin – Nikah Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cinzel:wght@400;500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #f0c4c4;
+  --rose-deep: #c97070;
+  --blush: #fbeaea;
+  --sage: #c8d8c0;
+  --sage-deep: #7a9e72;
+  --cream: #fdf8f2;
+  --gold: #b8922a;
+  --gold-light: #e2cfa0;
+  --gold-glow: #f0deb0;
+  --mauve: #b08898;
+  --text-dark: #3a2832;
+  --text-mid: #6a4858;
+  --text-light: #9a7888;
+  --card-bg: #ffffff;
+  --card-border: #e8d5b5;
+  --section-bg: #fdf4ee;
+  --overlay: rgba(253,248,242,0.95);
+}
+[data-theme="dark"] {
+  --rose: #7a3a3a;
+  --rose-deep: #c97070;
+  --blush: #2a1818;
+  --sage: #2a3a28;
+  --sage-deep: #7a9e72;
+  --cream: #1a1210;
+  --gold: #c9a96e;
+  --gold-light: #5a4020;
+  --gold-glow: #3a2a10;
+  --mauve: #806070;
+  --text-dark: #f0e0d0;
+  --text-mid: #c0a090;
+  --text-light: #907870;
+  --card-bg: #221818;
+  --card-border: #5a3a28;
+  --section-bg: #1e1410;
+  --overlay: rgba(26,18,16,0.95);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--cream);
+  font-family:'Lato',sans-serif;
+  color:var(--text-dark);
+  overflow-x:hidden;
+  cursor:none;
+  transition:background 0.5s,color 0.5s;
+}
+
+/* Custom cursor */
+.cursor{
+  position:fixed;width:16px;height:16px;
+  background:var(--rose-deep);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,opacity 0.3s;
+  mix-blend-mode:multiply;
+}
+[data-theme="dark"] .cursor{mix-blend-mode:screen;}
+.cursor-trail{
+  position:fixed;width:6px;height:6px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  opacity:0.5;
+  transition:transform 0.3s,opacity 0.3s;
+}
+
+/* Petal canvas */
+#petal-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;overflow:hidden;
+}
+
+/* Confetti */
+#confetti-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1000;
+}
+
+/* Controls bar */
+.controls-bar{
+  position:fixed;top:16px;right:16px;z-index:500;
+  display:flex;gap:8px;flex-direction:column;align-items:flex-end;
+}
+.ctrl-btn{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:50px;padding:8px 14px;
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;
+  color:var(--text-mid);cursor:pointer;
+  transition:all 0.3s;box-shadow:0 2px 12px rgba(0,0,0,0.08);
+  display:flex;align-items:center;gap:6px;
+}
+.ctrl-btn:hover{background:var(--rose-deep);color:#fff;border-color:var(--rose-deep);}
+
+/* Print btn */
+.print-btn{
+  background:var(--gold);color:#fff;border:none;
+  border-radius:50px;padding:8px 16px;
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;
+  cursor:pointer;transition:all 0.3s;
+}
+.print-btn:hover{opacity:0.85;}
+
+/* Lang toggle */
+.lang-toggle{
+  display:flex;gap:4px;background:var(--card-bg);
+  border:1px solid var(--card-border);border-radius:50px;padding:4px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+.lang-btn{
+  padding:5px 12px;border-radius:50px;border:none;
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.1em;
+  cursor:pointer;transition:all 0.3s;
+  background:transparent;color:var(--text-light);
+}
+.lang-btn.active{background:var(--rose-deep);color:#fff;}
+
+/* Music btn */
+.music-btn{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--card-bg);border:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.3s;
+  box-shadow:0 2px 12px rgba(0,0,0,0.08);
+  color:var(--text-mid);font-size:16px;
+}
+.music-btn.playing{background:var(--rose-deep);color:#fff;border-color:var(--rose-deep);}
+.music-btn.playing{animation:pulse-ring 2s infinite;}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 0 0 rgba(201,112,112,0.4);}
+  70%{box-shadow:0 0 0 12px rgba(201,112,112,0);}
+  100%{box-shadow:0 0 0 0 rgba(201,112,112,0);}
+}
+
+/* Page layout */
+.page{
+  position:relative;z-index:2;
+  max-width:720px;margin:0 auto;
+  padding:20px 16px 80px;
+}
+
+/* Parallax hero */
+.hero{
+  position:relative;overflow:hidden;
+  border-radius:28px 28px 0 0;
+  background:linear-gradient(160deg,#fdf0f0 0%,#f8eef8 40%,#eef5ea 100%);
+  padding:60px 30px 50px;
+  text-align:center;
+  border:1.5px solid var(--card-border);
+  border-bottom:none;
+}
+[data-theme="dark"] .hero{
+  background:linear-gradient(160deg,#2a1818 0%,#221828 40%,#182218 100%);
+}
+
+/* Animated crescent */
+.crescent-wrap{
+  position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateX(-50%) translateY(0);}
+  50%{transform:translateX(-50%) translateY(-8px);}
+}
+.crescent-svg{filter:drop-shadow(0 4px 12px rgba(201,169,110,0.4));}
+
+/* Lantern string */
+.lanterns{
+  position:absolute;top:0;left:0;width:100%;
+  display:flex;justify-content:space-around;
+  pointer-events:none;
+}
+.lantern{
+  display:flex;flex-direction:column;align-items:center;
+  animation:lanternSway ease-in-out infinite;
+}
+.lantern:nth-child(1){animation-duration:3s;animation-delay:0s;}
+.lantern:nth-child(2){animation-duration:3.5s;animation-delay:0.5s;}
+.lantern:nth-child(3){animation-duration:4s;animation-delay:1s;}
+.lantern:nth-child(4){animation-duration:3.2s;animation-delay:1.5s;}
+.lantern:nth-child(5){animation-duration:3.8s;animation-delay:0.8s;}
+@keyframes lanternSway{
+  0%,100%{transform:rotate(-5deg);}
+  50%{transform:rotate(5deg);}
+}
+
+.bismillah{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:20px;
+  color:var(--gold);letter-spacing:0.08em;
+  margin:50px 0 16px;
+  text-shadow:0 0 20px rgba(201,169,110,0.3);
+}
+.wedding-label{
+  font-family:'Cinzel',serif;font-size:10px;
+  letter-spacing:0.4em;color:var(--text-light);
+  text-transform:uppercase;margin-bottom:24px;
+}
+.couple-names{
+  display:flex;align-items:center;justify-content:center;
+  gap:20px;flex-wrap:wrap;
+}
+.name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:52px;font-weight:300;
+  color:var(--text-dark);line-height:1.05;
+}
+.name-sub{
+  display:block;font-size:11px;
+  font-family:'Cinzel',serif;
+  letter-spacing:0.25em;color:var(--text-light);
+  font-weight:400;margin-bottom:6px;
+}
+/* Gold shimmer */
+.shimmer{
+  background:linear-gradient(90deg,
+    var(--text-dark) 0%,
+    var(--gold) 40%,
+    #f0d080 50%,
+    var(--gold) 60%,
+    var(--text-dark) 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmerAnim 3s linear infinite;
+}
+@keyframes shimmerAnim{
+  0%{background-position:0% center;}
+  100%{background-position:200% center;}
+}
+.ampersand{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:72px;font-weight:300;
+  color:var(--rose-deep);line-height:1;
+  animation:heartbeat 2.5s ease-in-out infinite;
+}
+@keyframes heartbeat{
+  0%,100%{transform:scale(1);}
+  14%{transform:scale(1.12);}
+  28%{transform:scale(1);}
+  42%{transform:scale(1.06);}
+  56%{transform:scale(1);}
+}
+.floral-div{
+  display:flex;align-items:center;justify-content:center;
+  gap:12px;margin:28px 0 0;
+}
+.fl-line{flex:1;max-width:100px;height:1px;}
+.fl-line.l{background:linear-gradient(to right,transparent,var(--gold-light));}
+.fl-line.r{background:linear-gradient(to left,transparent,var(--gold-light));}
+.fl-icons{display:flex;gap:6px;align-items:center;}
+
+/* Card sections */
+.card{
+  background:var(--card-bg);
+  border:1.5px solid var(--card-border);
+  border-top:none;
+  border-radius:0 0 28px 28px;
+  overflow:hidden;
+  box-shadow:0 20px 80px rgba(100,50,30,0.1);
+  transition:background 0.5s,border-color 0.5s;
+}
+.section{
+  padding:44px 44px;
+  border-bottom:1px solid var(--card-border);
+  opacity:0;transform:translateY(24px);
+  transition:opacity 0.7s,transform 0.7s;
+}
+.section.visible{opacity:1;transform:translateY(0);}
+
+.section-label{
+  font-family:'Cinzel',serif;font-size:9px;
+  letter-spacing:0.4em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-label::before,.section-label::after{
+  content:'';flex:1;height:1px;
+  background:var(--gold-light);max-width:40px;
+}
+
+/* Date block */
+.date-block{
+  text-align:center;
+  background:linear-gradient(135deg,var(--section-bg),var(--card-bg));
+  border-radius:18px;border:1px solid var(--gold-light);
+  padding:40px 30px;position:relative;overflow:hidden;
+}
+.date-block::after{
+  content:'';position:absolute;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,var(--gold-glow),transparent);
+  top:-80px;right:-60px;pointer-events:none;
+}
+.nikah-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;font-weight:300;font-style:italic;
+  color:var(--text-dark);margin-bottom:24px;
+}
+.date-row{
+  display:flex;justify-content:center;gap:0;margin:16px 0;
+}
+.date-part{text-align:center;padding:0 24px;}
+.date-part:not(:last-child){border-right:1px solid var(--gold-light);}
+.date-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:48px;font-weight:300;
+  color:var(--rose-deep);line-height:1;
+}
+.date-lbl{
+  font-size:10px;letter-spacing:0.15em;
+  color:var(--text-light);text-transform:uppercase;margin-top:4px;
+}
+.day-name{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:16px;
+  color:var(--text-light);margin-top:8px;
+}
+
+/* Countdown */
+.countdown{
+  display:flex;justify-content:center;gap:10px;margin-top:24px;
+}
+.cd-box{
+  background:var(--card-bg);border:1px solid var(--gold-light);
+  border-radius:12px;padding:12px 16px;
+  text-align:center;min-width:64px;
+  transition:transform 0.3s,border-color 0.3s;
+}
+.cd-box:hover{transform:translateY(-4px);border-color:var(--rose-deep);}
+.cd-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;color:var(--rose-deep);
+  line-height:1;display:block;
+  transition:transform 0.2s;
+}
+.cd-num.flip{transform:rotateX(90deg);}
+.cd-lbl{
+  font-size:8px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--text-light);
+  margin-top:4px;display:block;
+}
+
+/* Schedule / program */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{
+  display:flex;gap:20px;position:relative;
+  padding-bottom:24px;
+}
+.tl-item:last-child{padding-bottom:0;}
+.tl-left{
+  width:70px;text-align:right;flex-shrink:0;
+  font-family:'Cinzel',serif;font-size:10px;
+  color:var(--gold);letter-spacing:0.05em;
+  padding-top:3px;
+}
+.tl-center{
+  display:flex;flex-direction:column;align-items:center;
+  flex-shrink:0;
+}
+.tl-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--rose-deep);border:2px solid var(--card-bg);
+  box-shadow:0 0 0 2px var(--rose-deep);
+  flex-shrink:0;
+}
+.tl-line{
+  flex:1;width:1px;
+  background:linear-gradient(to bottom,var(--rose-deep),var(--gold-light));
+  margin-top:4px;
+}
+.tl-item:last-child .tl-line{display:none;}
+.tl-right{padding-top:0;}
+.tl-event{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:400;
+  color:var(--text-dark);margin-bottom:2px;
+}
+.tl-desc{font-size:12px;color:var(--text-light);}
+
+/* Location */
+.loc-box{
+  background:linear-gradient(135deg,var(--section-bg),var(--card-bg));
+  border:1px solid var(--gold-light);border-radius:16px;
+  padding:28px;text-align:center;
+}
+.loc-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-style:italic;
+  color:var(--text-dark);margin-bottom:6px;
+}
+.loc-sub{font-size:13px;color:var(--text-light);margin-bottom:18px;}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.map-btn,.wa-btn,.cal-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 22px;border-radius:50px;
+  font-family:'Cinzel',serif;font-size:10px;
+  letter-spacing:0.15em;text-decoration:none;
+  cursor:pointer;border:none;
+  transition:all 0.3s;
+}
+.map-btn{
+  background:linear-gradient(135deg,var(--rose-deep),var(--mauve));
+  color:#fff;
+  box-shadow:0 4px 18px rgba(201,112,112,0.3);
+}
+.map-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,112,112,0.4);}
+.wa-btn{
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#fff;box-shadow:0 4px 18px rgba(37,211,102,0.25);
+}
+.wa-btn:hover{transform:translateY(-2px);}
+.cal-btn{
+  background:var(--card-bg);color:var(--text-mid);
+  border:1px solid var(--card-border);
+}
+.cal-btn:hover{background:var(--gold);color:#fff;border-color:var(--gold);}
+
+/* Map embed */
+.map-embed{
+  border-radius:14px;overflow:hidden;
+  border:1px solid var(--gold-light);
+  margin-top:18px;height:200px;
+  background:var(--section-bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;cursor:pointer;
+  transition:all 0.3s;
+}
+.map-embed:hover{border-color:var(--rose-deep);}
+.map-pin{font-size:32px;animation:bounce 2s ease-in-out infinite;}
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+.map-lbl{font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.2em;color:var(--text-light);}
+
+/* QR */
+.qr-box{
+  text-align:center;padding:20px;
+}
+.qr-svg{
+  border:8px solid var(--card-bg);
+  border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Dress code */
+.dress-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.dress-card{
+  background:var(--section-bg);
+  border:1px solid var(--gold-light);
+  border-radius:14px;padding:20px;
+  text-align:center;
+}
+.dress-swatch{
+  width:50px;height:50px;border-radius:50%;
+  margin:0 auto 10px;border:3px solid var(--card-bg);
+  box-shadow:0 2px 12px rgba(0,0,0,0.1);
+}
+.dress-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;color:var(--text-dark);margin-bottom:4px;
+}
+.dress-note{font-size:11px;color:var(--text-light);}
+
+/* Families */
+.family-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.family-card{
+  background:var(--section-bg);
+  border:1px solid var(--gold-light);
+  border-radius:16px;padding:24px 20px;
+}
+.family-head{
+  font-family:'Cinzel',serif;font-size:9px;
+  letter-spacing:0.3em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:14px;
+  padding-bottom:10px;border-bottom:1px solid var(--gold-light);
+}
+.family-member{margin-bottom:10px;}
+.family-member:last-child{margin-bottom:0;}
+.fm-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;color:var(--text-dark);
+}
+.fm-role{font-size:11px;color:var(--text-light);}
+
+/* Message */
+.msg-box{
+  background:linear-gradient(135deg,var(--blush),var(--section-bg));
+  border:1px solid var(--gold-light);border-radius:16px;
+  padding:28px;text-align:center;
+}
+.msg-text{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:18px;
+  color:var(--text-mid);line-height:1.8;
+}
+.msg-sig{
+  font-family:'Cinzel',serif;font-size:10px;
+  letter-spacing:0.2em;color:var(--gold);
+  margin-top:14px;
+}
+
+/* Contact */
+.contact-box{
+  background:var(--section-bg);
+  border:1px solid var(--gold-light);border-radius:14px;
+  padding:20px;
+}
+.contact-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;border-bottom:1px solid var(--gold-light);
+}
+.contact-item:last-child{border-bottom:none;}
+.contact-icon{font-size:18px;width:32px;text-align:center;}
+.contact-info{flex:1;}
+.contact-name{font-size:13px;font-weight:600;color:var(--text-dark);}
+.contact-num{font-size:12px;color:var(--text-light);}
+.call-btn{
+  padding:6px 14px;border-radius:50px;
+  background:var(--rose-deep);color:#fff;
+  font-size:10px;font-family:'Cinzel',serif;
+  letter-spacing:0.1em;border:none;cursor:pointer;
+  text-decoration:none;
+}
+
+/* Directions */
+.dir-box{
+  background:var(--section-bg);
+  border:1px solid var(--gold-light);border-radius:14px;
+  padding:20px;
+}
+.dir-item{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:8px 0;
+}
+.dir-num{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--rose-deep);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;
+  margin-top:1px;
+}
+.dir-text{font-size:13px;color:var(--text-mid);line-height:1.6;}
+
+/* Photo gallery */
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.gallery-item{
+  aspect-ratio:1;border-radius:10px;
+  background:var(--section-bg);
+  border:1px solid var(--gold-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;cursor:pointer;transition:all 0.3s;
+  overflow:hidden;position:relative;
+}
+.gallery-item:hover{transform:scale(1.03);border-color:var(--rose-deep);}
+.gallery-placeholder{
+  font-family:'Cinzel',serif;font-size:9px;
+  letter-spacing:0.15em;color:var(--text-light);
+  text-transform:uppercase;text-align:center;
+  padding:10px;
+}
+
+/* Photo frame */
+.photo-frame{
+  border:3px solid var(--gold-light);border-radius:18px;
+  background:var(--section-bg);
+  display:flex;align-items:center;justify-content:center;
+  padding:30px;margin-bottom:20px;
+  aspect-ratio:4/3;position:relative;overflow:hidden;
+}
+.photo-frame::before,.photo-frame::after{
+  content:'';position:absolute;
+  width:60px;height:60px;border:2px solid var(--gold-light);
+  opacity:0.5;
+}
+.photo-frame::before{top:10px;left:10px;border-right:none;border-bottom:none;border-radius:8px 0 0 0;}
+.photo-frame::after{bottom:10px;right:10px;border-left:none;border-top:none;border-radius:0 0 8px 0;}
+.photo-placeholder{
+  text-align:center;
+}
+.photo-icon{font-size:48px;margin-bottom:10px;display:block;}
+.photo-hint{font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.25em;color:var(--text-light);text-transform:uppercase;}
+
+/* RSVP */
+.rsvp-form{display:flex;flex-direction:column;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-label{
+  font-family:'Cinzel',serif;font-size:9px;
+  letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;
+}
+.form-input,.form-select,.form-textarea{
+  padding:12px 16px;border-radius:10px;
+  border:1px solid var(--card-border);
+  background:var(--section-bg);color:var(--text-dark);
+  font-family:'Lato',sans-serif;font-size:14px;
+  transition:border-color 0.3s;outline:none;
+  width:100%;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--rose-deep);
+}
+.form-textarea{height:80px;resize:vertical;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.rsvp-btn{
+  padding:14px;border-radius:50px;
+  background:linear-gradient(135deg,var(--rose-deep),var(--mauve));
+  color:#fff;border:none;cursor:pointer;
+  font-family:'Cinzel',serif;font-size:12px;
+  letter-spacing:0.2em;text-transform:uppercase;
+  transition:all 0.3s;
+  box-shadow:0 4px 20px rgba(201,112,112,0.3);
+}
+.rsvp-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,112,112,0.4);}
+.rsvp-success{
+  display:none;text-align:center;padding:30px;
+}
+.rsvp-success.show{display:block;}
+.rsvp-icon{font-size:48px;display:block;margin-bottom:12px;}
+.rsvp-msg{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:20px;color:var(--text-mid);
+}
+
+/* Footer */
+.card-footer{
+  background:linear-gradient(135deg,#faf0f0,#f0f5ea);
+  padding:40px;text-align:center;
+}
+[data-theme="dark"] .card-footer{
+  background:linear-gradient(135deg,#2a1818,#182218);
+}
+.footer-dua{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:22px;
+  color:var(--gold);margin-bottom:6px;
+}
+.footer-trans{
+  font-size:12px;color:var(--text-light);
+  letter-spacing:0.05em;margin-bottom:20px;
+}
+.footer-sep{
+  display:flex;align-items:center;gap:10px;
+  margin:20px 0;justify-content:center;
+}
+.footer-sep-line{
+  width:60px;height:1px;background:var(--gold-light);
+}
+.footer-copy{
+  font-family:'Cinzel',serif;font-size:9px;
+  letter-spacing:0.2em;color:var(--text-light);
+  text-transform:uppercase;
+}
+
+/* Malayalam hidden content */
+.ml{display:none;}
+.ml.active{display:block;}
+.en{display:block;}
+.en.active{display:block;}
+
+/* Scroll reveal animation */
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* Print styles */
+@media print{
+  .controls-bar,.ctrl-btn,.music-btn,.print-btn,
+  #petal-canvas,#confetti-canvas,.cursor,.cursor-trail{display:none!important;}
+  .section{opacity:1!important;transform:none!important;}
+  body{cursor:auto;}
+}
+
+/* Mobile */
+@media(max-width:500px){
+  .name{font-size:38px;}
+  .ampersand{font-size:56px;}
+  .family-grid,.dress-grid,.form-row{grid-template-columns:1fr;}
+  .section{padding:28px 20px;}
+  .date-num{font-size:36px;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursor-trail"></div>
+
+<canvas id="confetti-canvas"></canvas>
+<div id="petal-canvas"></div>
+
+<!-- Controls -->
+<div class="controls-bar">
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('ml')">മല</button>
+  </div>
+  <button class="music-btn" id="music-btn" onclick="toggleMusic()" title="Toggle music">♪</button>
+  <button class="ctrl-btn" onclick="toggleTheme()">🌙 Dark</button>
+  <button class="print-btn" onclick="window.print()">⎙ Print</button>
+</div>
+
+<!-- Hidden audio (Web Audio API tone) -->
+<audio id="bg-music" loop>
+  <source src="" type="audio/mpeg">
+</audio>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero" id="hero-section">
+    <!-- Lanterns -->
+    <div class="lanterns">
+      <div class="lantern"><svg width="16" height="28" viewBox="0 0 16 28"><rect x="2" y="6" width="12" height="18" rx="4" fill="#c97070" opacity="0.7"/><rect x="6" y="2" width="4" height="5" rx="1" fill="#b8922a" opacity="0.8"/><line x1="8" y1="24" x2="8" y2="28" stroke="#b8922a" stroke-width="1"/></svg><div style="width:1px;height:40px;background:linear-gradient(#b8922a,transparent);"></div></div>
+      <div class="lantern"><svg width="14" height="24" viewBox="0 0 14 24"><rect x="1" y="5" width="12" height="16" rx="3" fill="#7a9e72" opacity="0.7"/><rect x="5" y="1" width="4" height="5" rx="1" fill="#b8922a" opacity="0.8"/><line x1="7" y1="21" x2="7" y2="24" stroke="#b8922a" stroke-width="1"/></svg><div style="width:1px;height:50px;background:linear-gradient(#b8922a,transparent);"></div></div>
+      <div class="lantern"><svg width="18" height="30" viewBox="0 0 18 30"><rect x="2" y="7" width="14" height="20" rx="4" fill="#b8922a" opacity="0.6"/><rect x="6" y="2" width="6" height="6" rx="1" fill="#b8922a" opacity="0.9"/><line x1="9" y1="27" x2="9" y2="30" stroke="#b8922a" stroke-width="1"/></svg><div style="width:1px;height:30px;background:linear-gradient(#b8922a,transparent);"></div></div>
+      <div class="lantern"><svg width="14" height="24" viewBox="0 0 14 24"><rect x="1" y="5" width="12" height="16" rx="3" fill="#c97070" opacity="0.6"/><rect x="5" y="1" width="4" height="5" rx="1" fill="#b8922a" opacity="0.8"/><line x1="7" y1="21" x2="7" y2="24" stroke="#b8922a" stroke-width="1"/></svg><div style="width:1px;height:45px;background:linear-gradient(#b8922a,transparent);"></div></div>
+      <div class="lantern"><svg width="16" height="28" viewBox="0 0 16 28"><rect x="2" y="6" width="12" height="18" rx="4" fill="#7a9e72" opacity="0.7"/><rect x="6" y="2" width="4" height="5" rx="1" fill="#b8922a" opacity="0.8"/><line x1="8" y1="24" x2="8" y2="28" stroke="#b8922a" stroke-width="1"/></svg><div style="width:1px;height:38px;background:linear-gradient(#b8922a,transparent);"></div></div>
+    </div>
+
+    <!-- Crescent & Star -->
+    <div class="crescent-wrap">
+      <svg class="crescent-svg" width="60" height="60" viewBox="0 0 60 60">
+        <circle cx="22" cy="30" r="18" fill="#b8922a" opacity="0.9"/>
+        <circle cx="30" cy="30" r="16" fill="#fdf8f2"/>
+        <circle cx="30" cy="30" r="16" fill="url(#moon-grad)"/>
+        <defs>
+          <radialGradient id="moon-grad" cx="70%" cy="30%">
+            <stop offset="0%" stop-color="#fdf8f2"/>
+            <stop offset="100%" stop-color="#fdf0e0"/>
+          </radialGradient>
+        </defs>
+        <polygon points="45,8 47,14 53,14 48,18 50,24 45,20 40,24 42,18 37,14 43,14" fill="#b8922a" opacity="0.9"/>
+      </svg>
+    </div>
+
+    <div class="bismillah en">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <div class="bismillah ml" style="display:none;">ദൈവത്തിന്റെ നാമത്തിൽ</div>
+
+    <div class="wedding-label en">✦ Nikah Invitation ✦</div>
+    <div class="wedding-label ml" style="display:none;">✦ നിക്കാഹ് ക്ഷണം ✦</div>
+
+    <div class="couple-names">
+      <div>
+        <div class="name-sub en">Groom</div>
+        <div class="name-sub ml" style="display:none;">വരൻ</div>
+        <div class="name shimmer">Nabeel</div>
+        <div style="font-size:13px;color:var(--text-light);font-family:'Cinzel',serif;letter-spacing:0.15em;margin-top:4px;">Nelleri</div>
+      </div>
+      <div class="ampersand">&</div>
+      <div>
+        <div class="name-sub en">Bride</div>
+        <div class="name-sub ml" style="display:none;">വധു</div>
+        <div class="name shimmer">Shahalasin</div>
+        <div style="font-size:13px;color:var(--text-light);font-family:'Cinzel',serif;letter-spacing:0.15em;margin-top:4px;">&nbsp;</div>
+      </div>
+    </div>
+
+    <div class="floral-div">
+      <div class="fl-line l"></div>
+      <div class="fl-icons">
+        <svg width="14" height="14" viewBox="0 0 20 20"><path d="M10 2 Q13 8 18 10 Q13 12 10 18 Q7 12 2 10 Q7 8 10 2Z" fill="#c97070" opacity="0.7"/></svg>
+        <svg width="18" height="18" viewBox="0 0 20 20"><path d="M10 1 Q12 7 19 10 Q12 13 10 19 Q8 13 1 10 Q8 7 10 1Z" fill="#b8922a" opacity="0.8"/></svg>
+        <svg width="14" height="14" viewBox="0 0 20 20"><path d="M10 2 Q13 8 18 10 Q13 12 10 18 Q7 12 2 10 Q7 8 10 2Z" fill="#7a9e72" opacity="0.7"/></svg>
+      </div>
+      <div class="fl-line r"></div>
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <!-- DATE & COUNTDOWN -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">The Auspicious Day</span><span class="ml" style="display:none;">ശുഭദിനം</span></div>
+      <div class="date-block">
+        <div class="nikah-title"><span class="en">Nikah Ceremony</span><span class="ml" style="display:none;">നിക്കാഹ് ചടങ്ങ്</span></div>
+        <div class="date-row">
+          <div class="date-part">
+            <div class="date-num">31</div>
+            <div class="date-lbl"><span class="en">Day</span><span class="ml" style="display:none;">ദിനം</span></div>
+          </div>
+          <div class="date-part">
+            <div class="date-num">May</div>
+            <div class="date-lbl"><span class="en">Month</span><span class="ml" style="display:none;">മാസം</span></div>
+          </div>
+          <div class="date-part">
+            <div class="date-num">2026</div>
+            <div class="date-lbl"><span class="en">Year</span><span class="ml" style="display:none;">വർഷം</span></div>
+          </div>
+        </div>
+        <div class="day-name"><span class="en">Sunday</span><span class="ml" style="display:none;">ഞായർ</span></div>
+        <div style="margin-top:20px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;">
+          <span class="en">Counting Down</span><span class="ml" style="display:none;">എണ്ണൽ</span>
+        </div>
+        <div class="countdown">
+          <div class="cd-box"><span class="cd-num" id="days">--</span><span class="cd-lbl"><span class="en">Days</span><span class="ml" style="display:none;">ദിനം</span></span></div>
+          <div class="cd-box"><span class="cd-num" id="hours">--</span><span class="cd-lbl"><span class="en">Hrs</span><span class="ml" style="display:none;">മണി</span></span></div>
+          <div class="cd-box"><span class="cd-num" id="mins">--</span><span class="cd-lbl"><span class="en">Min</span><span class="ml" style="display:none;">മിനിറ്റ്</span></span></div>
+          <div class="cd-box"><span class="cd-num" id="secs">--</span><span class="cd-lbl"><span class="en">Sec</span><span class="ml" style="display:none;">സെക്</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRAM SCHEDULE -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">Program Schedule</span><span class="ml" style="display:none;">പരിപാടി ക്രമം</span></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-left">9:00 AM</div>
+          <div class="tl-center"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-right">
+            <div class="tl-event"><span class="en">Guest Arrival & Welcome</span><span class="ml" style="display:none;">അതിഥി വരവ് & സ്വാഗതം</span></div>
+            <div class="tl-desc"><span class="en">Guests are warmly received at Nelleri House</span><span class="ml" style="display:none;">നെല്ലേരി ഹൗസിൽ സ്വാഗതം</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left">10:30 AM</div>
+          <div class="tl-center"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-right">
+            <div class="tl-event"><span class="en">Nikah Ceremony</span><span class="ml" style="display:none;">നിക്കാഹ് ചടങ്ങ്</span></div>
+            <div class="tl-desc"><span class="en">The sacred union solemnised by Qazi</span><span class="ml" style="display:none;">ഖാസി ഉച്ഛരിക്കുന്ന വിശുദ്ധ ചടങ്ങ്</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left">12:00 PM</div>
+          <div class="tl-center"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-right">
+            <div class="tl-event"><span class="en">Dua & Blessings</span><span class="ml" style="display:none;">ദുആ & അനുഗ്രഹം</span></div>
+            <div class="tl-desc"><span class="en">Collective prayers for the couple</span><span class="ml" style="display:none;">ദമ്പതികൾക്കായി പ്രാർഥന</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left">1:00 PM</div>
+          <div class="tl-center"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-right">
+            <div class="tl-event"><span class="en">Wedding Reception</span><span class="ml" style="display:none;">വിവാഹ സ്വീകരണം</span></div>
+            <div class="tl-desc"><span class="en">Celebrations with family and friends</span><span class="ml" style="display:none;">കുടുംബ ആഘോഷം</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left">2:30 PM</div>
+          <div class="tl-center"><div class="tl-dot"></div></div>
+          <div class="tl-right">
+            <div class="tl-event"><span class="en">Grand Feast</span><span class="ml" style="display:none;">വലിയ വിരുന്ന്</span></div>
+            <div class="tl-desc"><span class="en">Traditional Kerala wedding feast</span><span class="ml" style="display:none;">കേരളത്തിന്റെ ഐതിഹ്യ വിഭവങ്ങൾ</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOCATION & MAP -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">Venue & Location</span><span class="ml" style="display:none;">സ്ഥലം</span></div>
+      <div class="loc-box">
+        <div style="font-size:28px;margin-bottom:8px;">🏡</div>
+        <div class="loc-name"><span class="en">Nelleri House</span><span class="ml" style="display:none;">നെല്ലേരി ഹൗസ്</span></div>
+        <div class="loc-sub"><span class="en">Kolayad, Kannur, Kerala</span><span class="ml" style="display:none;">കൊളയാട്, കണ്ണൂർ, കേരള</span></div>
+        <div class="btn-row">
+          <a class="map-btn" href="https://maps.google.com/?q=Kolayad,Kannur,Kerala" target="_blank">📍 <span class="en">View Map</span><span class="ml" style="display:none;">ഭൂപടം</span></a>
+          <button class="wa-btn" onclick="shareWhatsApp()">💬 <span class="en">Share</span><span class="ml" style="display:none;">പങ്കിടുക</span></button>
+          <button class="cal-btn" onclick="addToCalendar()">📅 <span class="en">Add to Calendar</span><span class="ml" style="display:none;">കലണ്ടർ</span></button>
+        </div>
+        <div class="map-embed" onclick="window.open('https://maps.google.com/?q=Kolayad,Kannur,Kerala','_blank')">
+          <div class="map-pin">📍</div>
+          <div class="map-lbl">Kolayad, Kannur</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:4px;">Click to open in Google Maps</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIRECTIONS -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">How to Reach</span><span class="ml" style="display:none;">എത്തിച്ചേരാൻ</span></div>
+      <div class="dir-box">
+        <div class="dir-item">
+          <div class="dir-num">1</div>
+          <div class="dir-text"><span class="en">From Kannur City — take NH66 north towards Payyanur, exit at Kolayad junction (≈ 12 km)</span><span class="ml" style="display:none;">കണ്ണൂർ നഗരത്തിൽ നിന്ന് — NH66 വടക്ക് പയ്യന്നൂർ ദിശയിൽ, കൊളയാട് ജംഗ്ഷനിൽ ഇറങ്ങുക</span></div>
+        </div>
+        <div class="dir-item">
+          <div class="dir-num">2</div>
+          <div class="dir-text"><span class="en">From Payyanur — head south on NH66, turn at Kolayad junction (≈ 8 km)</span><span class="ml" style="display:none;">പയ്യന്നൂരിൽ നിന്ന് — NH66-ൽ തെക്ക്, കൊളയാട് ജംഗ്ഷനിൽ തിരിയുക</span></div>
+        </div>
+        <div class="dir-item">
+          <div class="dir-num">3</div>
+          <div class="dir-text"><span class="en">Nearest railway — Payyanur Station (8 km). Autos and taxis available.</span><span class="ml" style="display:none;">അടുത്ത റെയിൽ — പയ്യന്നൂർ സ്റ്റേഷൻ (8 കി.മി). ഓട്ടോ ലഭ്യം.</span></div>
+        </div>
+        <div class="dir-item">
+          <div class="dir-num">4</div>
+          <div class="dir-text"><span class="en">Parking available at the venue. Please arrive 15 minutes early.</span><span class="ml" style="display:none;">വേദിയിൽ പാർക്കിംഗ് ലഭ്യമാണ്. 15 മിനിറ്റ് മുൻപ് എത്തുക.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRESS CODE -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">Dress Code</span><span class="ml" style="display:none;">വേഷ നിർദ്ദേശം</span></div>
+      <div class="dress-grid">
+        <div class="dress-card">
+          <div class="dress-swatch" style="background:linear-gradient(135deg,#f0c4c4,#c8d8c0);"></div>
+          <div class="dress-name"><span class="en">Pastel & Soft Tones</span><span class="ml" style="display:none;">പേസ്റ്റൽ നിറങ്ങൾ</span></div>
+          <div class="dress-note"><span class="en">Blush, mint, sage, cream</span><span class="ml" style="display:none;">പേസ്റ്റൽ, ക്രീം</span></div>
+        </div>
+        <div class="dress-card">
+          <div class="dress-swatch" style="background:linear-gradient(135deg,#e8d5b0,#c9a96e);"></div>
+          <div class="dress-name"><span class="en">Traditional Preferred</span><span class="ml" style="display:none;">പരമ്പരാഗതം</span></div>
+          <div class="dress-note"><span class="en">Kurta, saree, salwar</span><span class="ml" style="display:none;">കുർത്ത, സാരി, സൽവാർ</span></div>
+        </div>
+        <div class="dress-card">
+          <div class="dress-swatch" style="background:linear-gradient(135deg,#fff,#e8e0f0);"></div>
+          <div class="dress-name"><span class="en">White / Ivory</span><span class="ml" style="display:none;">വെള്ള</span></div>
+          <div class="dress-note"><span class="en">Elegant & formal</span><span class="ml" style="display:none;">ഔദ്യോഗിക</span></div>
+        </div>
+        <div class="dress-card">
+          <div class="dress-swatch" style="background:linear-gradient(135deg,#f0e8d0,#d4c090);"></div>
+          <div class="dress-name"><span class="en">Gold Accents</span><span class="ml" style="display:none;">സ്വർണ്ണ</span></div>
+          <div class="dress-note"><span class="en">Welcome for ladies</span><span class="ml" style="display:none;">സ്ത്രീകൾക്ക്</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAMILIES -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">With Blessings of Our Families</span><span class="ml" style="display:none;">കുടുംബ അനുഗ്രഹം</span></div>
+      <div class="family-grid">
+        <div class="family-card">
+          <div class="family-head"><span class="en">Groom's Family</span><span class="ml" style="display:none;">വരന്റെ കുടുംബം</span></div>
+          <div class="family-member">
+            <div class="fm-name">M.R. Nazar Nelleri</div>
+            <div class="fm-role"><span class="en">Father</span><span class="ml" style="display:none;">പിതാവ്</span></div>
+          </div>
+          <div class="family-member">
+            <div class="fm-name">M.S. Ramla</div>
+            <div class="fm-role"><span class="en">Mother</span><span class="ml" style="display:none;">മാതാവ്</span></div>
+          </div>
+        </div>
+        <div class="family-card">
+          <div class="family-head"><span class="en">Bride's Family</span><span class="ml" style="display:none;">വധുവിന്റെ കുടുംബം</span></div>
+          <div class="family-member">
+            <div class="fm-name">M.R. Ashraf</div>
+            <div class="fm-role"><span class="en">Father</span><span class="ml" style="display:none;">പിതാവ്</span></div>
+          </div>
+          <div class="family-member">
+            <div class="fm-name">Mrs. Sajila</div>
+            <div class="fm-role"><span class="en">Mother</span><span class="ml" style="display:none;">മാതാവ്</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHOTO FRAME & GALLERY -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">Moments & Memories</span><span class="ml" style="display:none;">ഓർമ്മകൾ</span></div>
+      <div class="photo-frame">
+        <div class="photo-placeholder">
+          <span class="photo-icon">💑</span>
+          <div class="photo-hint"><span class="en">Couple Photo Here</span><span class="ml" style="display:none;">ദമ്പതി ഫോട്ടോ</span></div>
+        </div>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><div class="gallery-placeholder"><span class="en">Photo 1</span></div></div>
+        <div class="gallery-item"><div class="gallery-placeholder"><span class="en">Photo 2</span></div></div>
+        <div class="gallery-item"><div class="gallery-placeholder"><span class="en">Photo 3</span></div></div>
+        <div class="gallery-item"><div class="gallery-placeholder"><span class="en">Photo 4</span></div></div>
+        <div class="gallery-item"><div class="gallery-placeholder"><span class="en">Photo 5</span></div></div>
+        <div class="gallery-item"><div class="gallery-placeholder"><span class="en">Photo 6</span></div></div>
+      </div>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--text-light);font-style:italic;">
+        <span class="en">Pre-wedding photos coming soon ✦</span><span class="ml" style="display:none;">ഫോട്ടോകൾ ഉടൻ ✦</span>
+      </div>
+    </div>
+
+    <!-- FAMILY MESSAGE -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">A Word from the Families</span><span class="ml" style="display:none;">കുടുംബ സന്ദേശം</span></div>
+      <div class="msg-box">
+        <div class="msg-text">
+          <span class="en">"With hearts full of joy and gratitude to Allah, we joyfully invite you to witness and bless the union of our beloved Nabeel and Shahalasin. Your presence will make this day truly unforgettable."</span>
+          <span class="ml" style="display:none;">"അല്ലാഹുവിനോടുള്ള നന്ദിയോടും സന്തോഷത്തോടും കൂടി, ഞങ്ങൾ നബീലിന്റെയും ഷഹലസിന്റെയും വിശുദ്ധ ബന്ധം ആഘോഷിക്കാൻ നിങ്ങളെ ക്ഷണിക്കുന്നു."</span>
+        </div>
+        <div class="msg-sig">— <span class="en">Nazar, Ramla, Ashraf & Sajila</span><span class="ml" style="display:none;">നസർ, രംല, അഷ്‌റഫ് & സജില</span></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">Contact & Queries</span><span class="ml" style="display:none;">ബന്ധപ്പെടാൻ</span></div>
+      <div class="contact-box">
+        <div class="contact-item">
+          <div class="contact-icon">👨</div>
+          <div class="contact-info">
+            <div class="contact-name">M.R. Nazar Nelleri</div>
+            <div class="contact-num"><span class="en">Groom's Father</span><span class="ml" style="display:none;">വരന്റെ പിതാവ്</span></div>
+          </div>
+          <a class="call-btn" href="tel:+919400000001"><span class="en">Call</span><span class="ml" style="display:none;">വിളി</span></a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">👨</div>
+          <div class="contact-info">
+            <div class="contact-name">M.R. Ashraf</div>
+            <div class="contact-num"><span class="en">Bride's Father</span><span class="ml" style="display:none;">വധുവിന്റെ പിതാവ്</span></div>
+          </div>
+          <a class="call-btn" href="tel:+919400000002"><span class="en">Call</span><span class="ml" style="display:none;">വിളി</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR CODE -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">Scan to Share Invitation</span><span class="ml" style="display:none;">ക്യുആർ കോഡ്</span></div>
+      <div class="qr-box">
+        <svg class="qr-svg" width="140" height="140" viewBox="0 0 140 140">
+          <!-- QR pattern (decorative) -->
+          <rect width="140" height="140" fill="white" rx="8"/>
+          <!-- Position detection patterns -->
+          <rect x="10" y="10" width="40" height="40" rx="3" fill="none" stroke="#3a2832" stroke-width="3"/>
+          <rect x="16" y="16" width="28" height="28" rx="2" fill="#3a2832"/>
+          <rect x="22" y="22" width="16" height="16" rx="1" fill="white"/>
+          <rect x="26" y="26" width="8" height="8" fill="#3a2832"/>
+          <rect x="90" y="10" width="40" height="40" rx="3" fill="none" stroke="#3a2832" stroke-width="3"/>
+          <rect x="96" y="16" width="28" height="28" rx="2" fill="#3a2832"/>
+          <rect x="102" y="22" width="16" height="16" rx="1" fill="white"/>
+          <rect x="106" y="26" width="8" height="8" fill="#3a2832"/>
+          <rect x="10" y="90" width="40" height="40" rx="3" fill="none" stroke="#3a2832" stroke-width="3"/>
+          <rect x="16" y="96" width="28" height="28" rx="2" fill="#3a2832"/>
+          <rect x="22" y="102" width="16" height="16" rx="1" fill="white"/>
+          <rect x="26" y="106" width="8" height="8" fill="#3a2832"/>
+          <!-- Data pattern rows -->
+          <rect x="58" y="10" width="6" height="6" fill="#3a2832"/><rect x="70" y="10" width="6" height="6" fill="#3a2832"/><rect x="82" y="10" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="18" width="6" height="6" fill="#3a2832"/><rect x="76" y="18" width="6" height="6" fill="#3a2832"/>
+          <rect x="64" y="26" width="6" height="6" fill="#3a2832"/><rect x="76" y="26" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="34" width="6" height="6" fill="#3a2832"/><rect x="70" y="34" width="6" height="6" fill="#3a2832"/>
+          <rect x="10" y="58" width="6" height="6" fill="#3a2832"/><rect x="22" y="58" width="6" height="6" fill="#3a2832"/><rect x="34" y="58" width="6" height="6" fill="#3a2832"/>
+          <rect x="46" y="58" width="6" height="6" fill="#3a2832"/><rect x="58" y="58" width="6" height="6" fill="#3a2832"/><rect x="70" y="58" width="6" height="6" fill="#3a2832"/>
+          <rect x="82" y="58" width="6" height="6" fill="#3a2832"/><rect x="94" y="58" width="6" height="6" fill="#3a2832"/><rect x="106" y="58" width="6" height="6" fill="#3a2832"/>
+          <rect x="118" y="58" width="6" height="6" fill="#3a2832"/><rect x="130" y="58" width="6" height="6" fill="#3a2832"/>
+          <rect x="10" y="66" width="6" height="6" fill="#3a2832"/><rect x="34" y="66" width="6" height="6" fill="#3a2832"/>
+          <rect x="46" y="66" width="6" height="6" fill="#3a2832"/><rect x="70" y="66" width="6" height="6" fill="#3a2832"/>
+          <rect x="94" y="66" width="6" height="6" fill="#3a2832"/><rect x="118" y="66" width="6" height="6" fill="#3a2832"/>
+          <rect x="22" y="74" width="6" height="6" fill="#3a2832"/><rect x="58" y="74" width="6" height="6" fill="#3a2832"/>
+          <rect x="82" y="74" width="6" height="6" fill="#3a2832"/><rect x="106" y="74" width="6" height="6" fill="#3a2832"/>
+          <rect x="130" y="74" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="82" width="6" height="6" fill="#3a2832"/><rect x="70" y="82" width="6" height="6" fill="#3a2832"/>
+          <rect x="94" y="82" width="6" height="6" fill="#3a2832"/><rect x="118" y="82" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="90" width="6" height="6" fill="#3a2832"/><rect x="82" y="90" width="6" height="6" fill="#3a2832"/>
+          <rect x="106" y="90" width="6" height="6" fill="#3a2832"/><rect x="130" y="90" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="98" width="6" height="6" fill="#3a2832"/><rect x="70" y="98" width="6" height="6" fill="#3a2832"/>
+          <rect x="94" y="98" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="106" width="6" height="6" fill="#3a2832"/><rect x="82" y="106" width="6" height="6" fill="#3a2832"/>
+          <rect x="118" y="106" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="114" width="6" height="6" fill="#3a2832"/><rect x="70" y="114" width="6" height="6" fill="#3a2832"/>
+          <rect x="94" y="114" width="6" height="6" fill="#3a2832"/><rect x="106" y="114" width="6" height="6" fill="#3a2832"/>
+          <rect x="58" y="122" width="6" height="6" fill="#3a2832"/><rect x="82" y="122" width="6" height="6" fill="#3a2832"/>
+          <rect x="130" y="90" width="6" height="6" fill="#3a2832"/>
+          <!-- center star -->
+          <text x="70" y="74" text-anchor="middle" font-size="10" fill="#c97070">✦</text>
+        </svg>
+        <div style="margin-top:12px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;color:var(--text-light);">
+          <span class="en">SCAN TO SHARE</span><span class="ml" style="display:none;">ഷെയർ ചെയ്യുക</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RSVP -->
+    <div class="section" data-reveal>
+      <div class="section-label"><span class="en">RSVP – Kindly Confirm</span><span class="ml" style="display:none;">സ്ഥിരീകരണം</span></div>
+      <div id="rsvp-form-wrap">
+        <div class="rsvp-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label"><span class="en">Your Name</span><span class="ml" style="display:none;">പേര്</span></label>
+              <input class="form-input" type="text" id="rsvp-name" placeholder="Full name">
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span class="en">Phone</span><span class="ml" style="display:none;">ഫോൺ</span></label>
+              <input class="form-input" type="tel" id="rsvp-phone" placeholder="+91 XXXXX XXXXX">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label"><span class="en">Attending</span><span class="ml" style="display:none;">പങ്കെടുക്കൽ</span></label>
+              <select class="form-select" id="rsvp-attend">
+                <option value="yes">✓ Yes, I'll be there!</option>
+                <option value="no">✗ Unable to attend</option>
+                <option value="maybe">? Maybe</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span class="en">Guests</span><span class="ml" style="display:none;">അതിഥികൾ</span></label>
+              <select class="form-select" id="rsvp-guests">
+                <option>1</option><option>2</option><option>3</option>
+                <option>4</option><option>5+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span class="en">Message / Wishes</span><span class="ml" style="display:none;">ആശംസകൾ</span></label>
+            <textarea class="form-textarea" id="rsvp-msg" placeholder="Your warm wishes for the couple..."></textarea>
+          </div>
+          <button class="rsvp-btn" onclick="submitRSVP()">
+            <span class="en">Send RSVP ✦</span><span class="ml" style="display:none;">അയക്കുക ✦</span>
+          </button>
+        </div>
+      </div>
+      <div class="rsvp-success" id="rsvp-success">
+        <span class="rsvp-icon">💝</span>
+        <div class="rsvp-msg"><span class="en">JazakAllah Khair! Your response has been recorded. See you on May 31!</span><span class="ml" style="display:none;">ജസാകല്ലാഹ്! നിങ്ങളുടെ സ്ഥിരീകരണം ലഭിച്ചു.</span></div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer">
+      <div style="font-size:28px;margin-bottom:16px;">🌙✨</div>
+      <div class="footer-dua">بَارَكَ اللهُ لَكُمَا</div>
+      <div class="footer-trans"><span class="en">May Allah bless you both</span><span class="ml" style="display:none;">അല്ലാഹു നിങ്ങൾ രണ്ടുപേർക്കും അനുഗ്രഹം ചൊരിയട്ടെ</span></div>
+      <div class="footer-sep">
+        <div class="footer-sep-line"></div>
+        <svg width="16" height="16" viewBox="0 0 20 20"><path d="M10 1 Q12 7 19 10 Q12 13 10 19 Q8 13 1 10 Q8 7 10 1Z" fill="#b8922a" opacity="0.7"/></svg>
+        <div class="footer-sep-line"></div>
+      </div>
+      <div class="footer-copy">
+        Nabeel Nelleri &nbsp;✦&nbsp; Shahalasin &nbsp;✦&nbsp; 31 May 2026
+      </div>
+    </div>
+
+  </div><!-- /card -->
+</div><!-- /page -->
+
+<script>
+// ─── Custom cursor ────────────────────────────────────────
+const cur = document.getElementById('cursor');
+const trail = document.getElementById('cursor-trail');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+setInterval(()=>{
+  tx+=(mx-tx)*0.15;ty+=(my-ty)*0.15;
+  trail.style.left=tx+'px';trail.style.top=ty+'px';
+},16);
+
+// ─── Theme toggle ─────────────────────────────────────────
+function toggleTheme(){
+  const d=document.documentElement;
+  const btn=document.querySelector('.ctrl-btn');
+  if(d.dataset.theme==='dark'){
+    d.dataset.theme='light';btn.textContent='🌙 Dark';
+  }else{
+    d.dataset.theme='dark';btn.textContent='☀️ Light';
+  }
+}
+
+// ─── Language toggle ──────────────────────────────────────
+function setLang(lang){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  document.querySelectorAll('.en').forEach(el=>el.style.display=lang==='en'?'':'none');
+  document.querySelectorAll('.ml').forEach(el=>el.style.display=lang==='ml'?'':'none');
+}
+
+// ─── Countdown ────────────────────────────────────────────
+function updateCountdown(){
+  const target=new Date('2026-05-31T10:00:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<=0){['days','hours','mins','secs'].forEach(id=>document.getElementById(id).textContent='0');return;}
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  const set=(id,val)=>{
+    const el=document.getElementById(id);
+    const newVal=String(val).padStart(2,'0');
+    if(el.textContent!==newVal){
+      el.classList.add('flip');
+      setTimeout(()=>{el.textContent=newVal;el.classList.remove('flip');},100);
+    }
+  };
+  set('days',d);set('hours',h);set('mins',m);set('secs',s);
+}
+updateCountdown();setInterval(updateCountdown,1000);
+
+// ─── Scroll reveal ────────────────────────────────────────
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.12});
+document.querySelectorAll('[data-reveal]').forEach(el=>obs.observe(el));
+
+// ─── Petal rain ───────────────────────────────────────────
+const petalCanvas=document.getElementById('petal-canvas');
+const colors=['#f0c4c4','#f5d5d5','#c8d8c0','#e8d5b0','#f0d5e0','#dde8d8','#e8c8e0'];
+function makePetal(){
+  const el=document.createElement('div');
+  Object.assign(el.style,{
+    position:'absolute',top:'-60px',opacity:'0',
+    left:Math.random()*100+'%',
+    animation:`petalFall ${6+Math.random()*8}s ${Math.random()*6}s linear forwards`
+  });
+  const sz=10+Math.random()*14;
+  const col=colors[Math.floor(Math.random()*colors.length)];
+  const rot=Math.random()*360;
+  el.innerHTML=`<svg width="${sz}" height="${sz}" viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="5" ry="10" fill="${col}" opacity="0.75" transform="rotate(${rot},10,10)"/></svg>`;
+  petalCanvas.appendChild(el);
+  setTimeout(()=>el.remove(),(14+6)*1000);
+}
+const style=document.createElement('style');
+style.textContent=`@keyframes petalFall{0%{transform:translateY(0) rotate(0deg);opacity:0}10%{opacity:.7}90%{opacity:.4}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}`;
+document.head.appendChild(style);
+for(let i=0;i<20;i++)setTimeout(makePetal,i*500);
+setInterval(makePetal,700);
+
+// ─── Confetti burst on load ───────────────────────────────
+const ccv=document.getElementById('confetti-canvas');
+const ctx2=ccv.getContext('2d');
+ccv.width=window.innerWidth;ccv.height=window.innerHeight;
+const confetti=[];
+const confColors=['#f0c4c4','#c8d8c0','#b8922a','#c97070','#e8d5b0','#f5d5d5'];
+for(let i=0;i<120;i++){
+  confetti.push({
+    x:Math.random()*ccv.width,
+    y:Math.random()*ccv.height-ccv.height,
+    r:Math.random()*6+2,
+    d:Math.random()*3+1,
+    color:confColors[Math.floor(Math.random()*confColors.length)],
+    tilt:Math.random()*10-5,speed:Math.random()*3+1,
+    opacity:1
+  });
+}
+let confettiActive=true;
+function drawConfetti(){
+  if(!confettiActive)return;
+  ctx2.clearRect(0,0,ccv.width,ccv.height);
+  confetti.forEach(c=>{
+    ctx2.save();
+    ctx2.globalAlpha=c.opacity;
+    ctx2.fillStyle=c.color;
+    ctx2.beginPath();
+    ctx2.ellipse(c.x,c.y,c.r,c.r*0.4,c.tilt,0,Math.PI*2);
+    ctx2.fill();
+    ctx2.restore();
+    c.y+=c.speed;c.x+=Math.sin(c.d)*2;
+    c.tilt+=0.1;c.opacity-=0.003;
+    if(c.y>ccv.height)c.opacity=0;
+  });
+  if(confetti.every(c=>c.opacity<=0)){confettiActive=false;ctx2.clearRect(0,0,ccv.width,ccv.height);}
+  else requestAnimationFrame(drawConfetti);
+}
+setTimeout(drawConfetti,800);
+
+// ─── Music (Web Audio tone) ───────────────────────────────
+let audioCtx=null,gainNode=null,oscillators=[];
+let musicPlaying=false;
+function toggleMusic(){
+  const btn=document.getElementById('music-btn');
+  if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(musicPlaying){
+    oscillators.forEach(o=>{try{o.stop();}catch(e){}});
+    oscillators=[];
+    btn.classList.remove('playing');btn.textContent='♪';
+    musicPlaying=false;
+  }else{
+    gainNode=audioCtx.createGain();
+    gainNode.gain.setValueAtTime(0.06,audioCtx.currentTime);
+    gainNode.connect(audioCtx.destination);
+    // Gentle soft drone - peaceful nasheed-like tones
+    [[261.63,0],[329.63,0.3],[392,0.6],[523.25,1]].forEach(([freq,delay],i)=>{
+      const osc=audioCtx.createOscillator();
+      const g2=audioCtx.createGain();
+      osc.type='sine';osc.frequency.value=freq;
+      g2.gain.setValueAtTime(0,audioCtx.currentTime+delay);
+      g2.gain.linearRampToValueAtTime(0.3,audioCtx.currentTime+delay+0.5);
+      osc.connect(g2);g2.connect(gainNode);
+      osc.start(audioCtx.currentTime+delay);
+      oscillators.push(osc);
+    });
+    btn.classList.add('playing');btn.textContent='♫';
+    musicPlaying=true;
+  }
+}
+
+// ─── WhatsApp share ───────────────────────────────────────
+function shareWhatsApp(){
+  const msg=encodeURIComponent("🌙 You're invited to the Nikah of\n\n*Nabeel Nelleri & Shahalasin*\n\n📅 31 May 2026 | Sunday\n📍 Nelleri House, Kolayad, Kannur\n\nBarakallahu lakuma! 💕");
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+
+// ─── Add to Calendar ──────────────────────────────────────
+function addToCalendar(){
+  const start='20260531T100000';
+  const end='20260531T160000';
+  const title=encodeURIComponent('Nikah: Nabeel & Shahalasin');
+  const loc=encodeURIComponent('Nelleri House, Kolayad, Kannur, Kerala');
+  const details=encodeURIComponent('You are cordially invited to the Nikah ceremony. Barakallahu lakuma!');
+  const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${loc}`;
+  window.open(url,'_blank');
+}
+
+// ─── RSVP ─────────────────────────────────────────────────
+function submitRSVP(){
+  const name=document.getElementById('rsvp-name').value.trim();
+  if(!name){alert('Please enter your name.');return;}
+  document.getElementById('rsvp-form-wrap').style.display='none';
+  document.getElementById('rsvp-success').classList.add('show');
+  // Trigger mini confetti burst
+  confetti.forEach(c=>{c.y=-20;c.opacity=1;});
+  confettiActive=true;
+  requestAnimationFrame(drawConfetti);
+}
+
+// ─── Hero parallax ────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  document.getElementById('hero-section').style.transform=`translateY(${y*0.3}px)`;
+});
+</script>
+</body>
+</html>
