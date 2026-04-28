@@ -39,7 +39,7 @@
         <h1 class="couple-names">
           <span class="name">Nabeel</span>
           <span class="ampersand">&</span>
-          <span class="name">Shahala</span>
+          <span class="name">Shahalasin</span>
         </h1>
         <br>
         <p class="hero-date">Sunday, 31 May 2026</p>
@@ -85,7 +85,7 @@
 
           <div class="person-card">
             <div class="label">Bride</div>
-            <h3>Shahala Sin</h3>
+            <h3>ShahalaSin</h3>
             <p>Daughter of Mr. Ashraf & Mrs. Sajila</p>
           </div>
         </div>
@@ -118,7 +118,7 @@
           <div class="event-card">
             <h3>Map</h3>
             <p>
-              <a class="btn" href="https://maps.app.goo.gl/MzYtP6dyp5kXiaLx8" target="_blank">
+              <a class="btn" href="https://maps.app.goo.gl/3eSsHY8bqxnahjJZA" target="_blank">
                 Open Location
               </a>
             </p>
@@ -197,14 +197,20 @@
 
 const music = document.getElementById("bg-music");
 
-// Try autoplay
+// Try autoplay (muted works)
 window.addEventListener("load", () => {
-    music.play().catch(() => {});
+  music.play().catch(() => {});
 });
 
-// Force play on first tap (mobile fix)
+// Unmute + play on first user interaction
+document.addEventListener("click", () => {
+  music.muted = false;
+  music.play();
+}, { once: true });
+
 document.addEventListener("touchstart", () => {
-    music.play();
+  music.muted = false;
+  music.play();
 }, { once: true });
 
   </script>
